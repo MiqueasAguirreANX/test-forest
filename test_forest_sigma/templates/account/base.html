@@ -16,7 +16,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">Test-Forest</a>
+          <a class="navbar-brand" href="{%url 'core:index' %}">Test-Forest</a>
           {% if request.user.is_authenticated%}
           <a href="accounts/logout"><button class="btn btn-primary logout">Logout</button></a>
           {% endif %}
@@ -25,5 +25,8 @@
       </nav>
     {% block content  %}
     {% endblock content %}
+    <script>
+        document.querySelector('#div_id_email').style.display='none';
+    </script>
 </body>
 </html>
