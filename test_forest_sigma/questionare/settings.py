@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'crispy_forms',
+    'allauth.socialaccount',
 ]
 
 MIDDLEWARE = [
@@ -82,12 +83,13 @@ if ENVIRONMENT == 'production':
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
-# Djanfo AllAuth settings 
+# Djanfo AllAuth settings
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
-
+LOGIN_REDIRECT_URL = '/'
+CHANGEPASSWORD_REDIRECT_URL = '/'
 SITE_ID = 1
 
 
