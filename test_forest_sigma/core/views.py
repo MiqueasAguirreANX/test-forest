@@ -14,16 +14,20 @@ def index(request):
 def question(request, id):
     if request.method == 'POST':
         # If the user push the next button, send his answer and procces it
-        user_answer = request.POST['flexRadioDefault']
-        print(user_answer)
-        if user_answer > 0 and user_answer <= 5:
-            answer = Answer(user=request.username, question_index=id, answer=user_answer)
-            answer.save()
-            # everything ok
-            return redirect(f'question/{id+1}')
-        else:
-            # bad answer, redirect to the same page
-            return redirect(f'question/{id}')
+        try:
+            user_answer = int(request.POST['flexRadioDefault'])
+            print(user_answer)
+            print(request.username)
+            if user_answer > 0 and user_answer <= 5:
+                answer = Answer(user=request.username, question_index=id, answer=user_answer)
+                answer.save()
+                # everything ok
+                return redirect(f'question/{id+1}')
+            else:
+                # bad answer, redirect to the same page
+                return redirect(f'question/{id}')
+        except :
+            pass
 
     
     user_question = Question.objects.filter(index=id)
