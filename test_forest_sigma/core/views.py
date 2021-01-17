@@ -7,10 +7,10 @@ from .models import Question, Answer
 
 @login_required
 def index(request):
-    return render(request, "account/base.html")
+    return render(request, "question.html")
 
 
-#Reusable view for every question
+# Reusable view for every question
 def question(request, id):
     if request.method == 'POST':
         # If the user push the next button, send his answer and procces it
@@ -19,17 +19,17 @@ def question(request, id):
             print(user_answer)
             print(request.username)
             if user_answer > 0 and user_answer <= 5:
-                answer = Answer(user=request.username, question_index=id, answer=user_answer)
+                answer = Answer(user=request.username,
+                                question_index=id, answer=user_answer)
                 answer.save()
                 # everything ok
                 return redirect(f'question/{id+1}')
             else:
                 # bad answer, redirect to the same page
                 return redirect(f'question/{id}')
-        except :
+        except:
             pass
 
-    
     user_question = Question.objects.filter(index=id)
-    context = { 'question' : user_question[0] , 'id' : id}
-    return render(request, 'account/question.html', context)                              
+    context = {'question': user_question[0], 'id': id}
+    return render(request, 'account/question.html', context)
