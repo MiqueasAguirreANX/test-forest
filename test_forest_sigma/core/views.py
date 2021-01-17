@@ -1,13 +1,18 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from .models import Question, Answer
+from django.core.paginator import Paginator
 # Create your views here.
 # @login_required
 
 
 @login_required
 def index(request):
-    return render(request, "question.html")
+    questions = Question.objects.all()
+    paginator = Paginator(questions, 11)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, "question.html", {'page_obj': page_obj})
 
 
 # Reusable view for every question
