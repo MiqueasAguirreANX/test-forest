@@ -44,7 +44,7 @@ CATEGORY_CHOICES = (
 class Question(models.Model):
     question = models.CharField(max_length=150, null=True)
     subscale = models.CharField(
-        choices=CATEGORY_CHOICES, max_length=1, null=True)
+        choices=CATEGORY_CHOICES, max_length=2, null=True)
 
     def __str__(self) -> str:
         return f'{self.question} {self.subscale}'

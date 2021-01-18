@@ -1,6 +1,8 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from .models import Question, Answer
+from django.http import JsonResponse
+from django.shortcuts import HttpResponse, HttpResponseRedirect, render
 from django.core.paginator import Paginator
 # Create your views here.
 # @login_required
@@ -8,6 +10,12 @@ from django.core.paginator import Paginator
 
 @login_required
 def index(request):
+    if request.method == 'POST':
+        questions = Question.objects.all()
+        paginator = Paginator(questions, 11)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        return render(request, 'question.html', {"message": "you have submitted the form", 'page_obj': page_obj})
     questions = Question.objects.all()
     paginator = Paginator(questions, 11)
     page_number = request.GET.get('page')
@@ -38,3 +46,23 @@ def question(request, id):
     user_question = Question.objects.filter(index=id)
     context = {'question': user_question[0], 'id': id}
     return render(request, 'account/question.html', context)
+
+
+def createSession(request, question_id, answerSelected):
+    request.session[question_id] = answerSelected
+    return JsonResponse({
+        "status": "done",
+    })
+
+
+def getSession(request, question_id):
+    try:
+        ans = request.session[question_id]
+        return JsonResponse({
+            "ans": ans,
+            "id": question_id
+        })
+    except:
+        return JsonResponse({
+            "error": "no session found",
+        })
