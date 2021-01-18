@@ -16,6 +16,7 @@ def index(request):
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         return render(request, 'question.html', {"message": "you have submitted the form", 'page_obj': page_obj})
+        
     questions = Question.objects.all()
     paginator = Paginator(questions, 11)
     page_number = request.GET.get('page')
