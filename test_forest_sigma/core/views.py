@@ -12,13 +12,13 @@ from django.core.paginator import Paginator
 def index(request):
     if request.method == 'POST':
         questions = Question.objects.all()
-        paginator = Paginator(questions, 11)
+        paginator = Paginator(questions, 1)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         return render(request, 'question.html', {"message": "you have submitted the form", 'page_obj': page_obj})
         
     questions = Question.objects.all()
-    paginator = Paginator(questions, 11)
+    paginator = Paginator(questions, 1)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return render(request, "question.html", {'page_obj': page_obj})

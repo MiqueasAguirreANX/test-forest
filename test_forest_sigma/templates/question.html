@@ -47,7 +47,7 @@
     {% endfor %}
     
 </div>
-{% if page_obj.has_previous %}
+{% if not page_obj.has_next %}
 <div class="container col-lg-6 mt-4">
   <button class="btn btn-primary" type="submit" id="submit">Submit</button>
 </div>
