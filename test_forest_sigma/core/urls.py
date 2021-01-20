@@ -1,5 +1,5 @@
 from django.urls import path
-from core.views import index, createSession, getSession, submitAns
+from core.views import index, createSession, getSession, submitAns,visualize
 app_name = 'core'
 
 urlpatterns = [
@@ -11,4 +11,5 @@ urlpatterns = [
     path('createsession/<str:question_id>/<str:answerSelected>',
          createSession, name="createsession"),
     path('submitans/<question_id>/<answers>', submitAns, name="submitans"),
+    path('visualize',visualize,name='visualize')
 ]
