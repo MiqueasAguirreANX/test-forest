@@ -15,20 +15,25 @@ from django.shortcuts import HttpResponse, HttpResponseRedirect, render
 
 @login_required
 def index(request):
-    questions = Question.objects.all()
-    question_list = []
-    for i in questions:
-        question_list.append(i)
-    random.shuffle(question_list)
-    page = request.GET.get('page', 1)
-    paginator = Paginator(question_list, 1)
     try:
-        page_obj = paginator.page(page)
-    except PageNotAnInteger:
-        page_obj = paginator.page(1)
-    except EmptyPage:
-        page_obj = paginator.page(paginator.num_pages)
-    return render(request, "question.html", {'page_obj': page_obj})
+        answers = Answer.objects.filter(user=request.user)
+        if len(answers) == 21:
+            return redirect('core:visualize')
+    except:
+        questions = Question.objects.all()
+        question_list = []
+        for i in questions:
+            question_list.append(i)
+        random.shuffle(question_list)
+        page = request.GET.get('page', 1)
+        paginator = Paginator(question_list, 1)
+        try:
+            page_obj = paginator.page(page)
+        except PageNotAnInteger:
+            page_obj = paginator.page(1)
+        except EmptyPage:
+            page_obj = paginator.page(paginator.num_pages)
+        return render(request, "question.html", {'page_obj': page_obj})
 
 
 @login_required
@@ -57,7 +62,7 @@ def submitAns(request, question_id, answers):
 @login_required
 def visualize(request):
     answers = Answer.objects.filter(user=request.user)
-    if(len(answers) < 21):
+    if len(answers) < 21:
         return redirect('core:requestions')
     ans_scores_1, ans_scores_2 = [], []
     subscale_score_dict = {}
