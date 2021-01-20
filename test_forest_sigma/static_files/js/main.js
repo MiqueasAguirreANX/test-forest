@@ -1,9 +1,9 @@
-    document.querySelectorAll('.radiobtn').forEach(input => getSession(input.id));
-    document.querySelectorAll('.radiobtn').forEach(item => item.addEventListener('click',()=>{
-        createSession(item.id,item.value);
-        submitAns(item.id,item.value);
-        document.querySelector('#nextbtn').click();
-    }));
+document.querySelectorAll('.radiobtn').forEach(input => getSession(input.id));
+document.querySelectorAll('.radiobtn').forEach(item => item.addEventListener('click',()=>{
+    createSession(item.id,item.value);
+    submitAns(item.id,item.value);
+    document.querySelector('#nextbtn').click();
+}));
 
 
 

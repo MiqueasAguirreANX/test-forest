@@ -3,19 +3,27 @@ from django.contrib.auth.decorators import login_required
 from .models import Question, Answer
 from django.http import JsonResponse
 from django.shortcuts import HttpResponse, HttpResponseRedirect, render
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+import random
 # Create your views here.
 # @login_required
 
 
 @login_required
 def index(request):
-    if request.method == 'POST':
-        return render(request, 'question.html', {"message": "you have submitted the form"})
     questions = Question.objects.all()
-    paginator = Paginator(questions, 1)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+    question_list = []
+    for i in questions:
+        question_list.append(i)
+    random.shuffle(question_list)
+    page = request.GET.get('page', 1)
+    paginator = Paginator(question_list, 1)
+    try:
+        page_obj = paginator.page(page)
+    except PageNotAnInteger:
+        page_obj = paginator.page(1)
+    except EmptyPage:
+        page_obj = paginator.page(paginator.num_pages)
     return render(request, "question.html", {'page_obj': page_obj})
 
 
@@ -40,7 +48,40 @@ def submitAns(request, question_id, answers):
     })
 
 
-# Reusable view for every question
+@login_required
+def visualize(request):
+    answers = Answer.objects.filter(user=request.user)
+    if(len(answers) < 22):
+        return redirect('core:requestions')
+    ans_scores_1, ans_scores_2 = [], []
+    subscale_score_dict = {}
+    for ans in answers:
+        if ans.question.subscale == "1":
+            ans_scores_1.append(ans.answer)
+        elif ans.question.subscale == "2":
+            ans_scores_2.append(ans.answer)
+        print(type(ans.question.subscale))
+    subscale_score_dict["1"] = ans_scores_1
+    subscale_score_dict["2"] = ans_scores_2
+    print(sum(subscale_score_dict["1"]))
+
+
+@login_required
+def reQuestions(request):
+    questions = Question.objects.all()
+    question_list = []
+    for i in questions:
+        question_list.append(i)
+    random.shuffle(question_list)
+    page = request.GET.get('page', 1)
+    paginator = Paginator(question_list, 1)
+    try:
+        page_obj = paginator.page(page)
+    except PageNotAnInteger:
+        page_obj = paginator.page(1)
+    except EmptyPage:
+        page_obj = paginator.page(paginator.num_pages)
+    return render(request, "question.html", {'page_obj': page_obj, "message": "you have not answer all the questions please answer all the questions and then submit!"})
 
 
 def createSession(request, question_id, answerSelected):

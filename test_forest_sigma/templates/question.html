@@ -3,12 +3,12 @@
 {% block title_page %} Question {{ id }}{% endblock %}
 
 {% block content %}
-{% if message %}
-<div class="alert alert-success">
+<div class="container mt-5 col-lg-6" style="margin-top: 100px;">
+  {% if message %}
+<div class="alert alert-danger">
   {{message}}
 </div>
 {% endif %}
-<div class="container mt-5 col-lg-6" style="margin-top: 100px;">
     {% for question in page_obj %}
     <h2> <span class="question_number">{{question.id}}</span> To what extent do I like to {{ question.question }}?</h2>
     <form method="POST" id="form-{{question.id}}" action="{% url 'core:index' %}">
@@ -45,7 +45,11 @@
         </div>
     </form>
     {% endfor %}
-    
 </div>
+{% if page_obj.number == 22 %}
+<div class="container col-lg-6 mt-5">
+<a href="{% url 'core:visualize' %}" class="btn btn-primary">Submit Your All Answers</a>
+</div>
+{% endif %}
 
 {% endblock %}
