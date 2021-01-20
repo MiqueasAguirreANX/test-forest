@@ -4,6 +4,8 @@ from .models import Question, Answer
 from django.http import JsonResponse
 from django.shortcuts import HttpResponse, HttpResponseRedirect, render
 from django.core.paginator import Paginator
+import json
+from json import dumps
 # Create your views here.
 # @login_required
 
@@ -26,11 +28,13 @@ def submitAns(request, question_id, answers):
         answer = Answer.objects.get(
             user=request.user, question=question)
         answer.answer = int(answers)
+        print('answers',answer)
         answer.save()
         return JsonResponse({"status": "updated"})
     except:
         answer = Answer(user=request.user, question=question,
                         answer=int(answers))
+        print('answer',answer)
         answer.save()
         return JsonResponse({
             "status": "added"
@@ -38,6 +42,26 @@ def submitAns(request, question_id, answers):
     return JsonResponse({
         "error": "SomeThing Went Wrong"
     })
+
+@login_required
+def visualize(request):
+    answers = Answer.objects.filter(user=request.user)
+    ans_scores_1,ans_scores_2 = [] , []
+    subscale_score_dict = {}
+    ## For 2 subscales for now - will update during delievering to client for 36 subscales
+    for ans in answers:
+        if ans.question.subscale == "1":
+            ans_scores_1.append(ans.answer)
+        elif ans.question.subscale == "2":
+            ans_scores_2.append(ans.answer)
+
+    subscale_score_dict["1"] = sum(ans_scores_1)
+    subscale_score_dict["2"] = sum(ans_scores_2)
+    
+    datadict = dumps(subscale_score_dict)
+    
+    return render(request,'visualize.html',{'answers':datadict})
+    
 
 
 # Reusable view for every question
