@@ -10,7 +10,7 @@
 {% endif %}
 <div class="container mt-5 col-lg-6" style="margin-top: 100px;">
     {% for question in page_obj %}
-    <h2> <span class="question_number">{{question.id}})</span> To what extent do I like to {{ question.question }}?</h2>
+    <h2> <span class="question_number">{{question.id}}</span> To what extent do I like to {{ question.question }}?</h2>
     <form method="POST" id="form-{{question.id}}" action="{% url 'core:index' %}">
         {% csrf_token %}
         <div class="form-check ml-3" id="form-check-1">
@@ -47,10 +47,5 @@
     {% endfor %}
     
 </div>
-{% if not page_obj.has_next %}
-<div class="container col-lg-6 mt-4">
-  <button class="btn btn-primary" type="submit" id="submit">Submit</button>
-</div>
-{% endif %}
 
 {% endblock %}

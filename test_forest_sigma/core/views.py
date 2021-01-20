@@ -11,12 +11,7 @@ from django.core.paginator import Paginator
 @login_required
 def index(request):
     if request.method == 'POST':
-        questions = Question.objects.all()
-        paginator = Paginator(questions, 1)
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        return render(request, 'question.html', {"message": "you have submitted the form", 'page_obj': page_obj})
-        
+        return render(request, 'question.html', {"message": "you have submitted the form"})
     questions = Question.objects.all()
     paginator = Paginator(questions, 1)
     page_number = request.GET.get('page')
@@ -24,29 +19,28 @@ def index(request):
     return render(request, "question.html", {'page_obj': page_obj})
 
 
-# Reusable view for every question
-def question(request, id):
-    if request.method == 'POST':
-        # If the user push the next button, send his answer and procces it
-        try:
-            user_answer = int(request.POST['flexRadioDefault'])
-            print(user_answer)
-            print(request.username)
-            if user_answer > 0 and user_answer <= 5:
-                answer = Answer(user=request.username,
-                                question_index=id, answer=user_answer)
-                answer.save()
-                # everything ok
-                return redirect(f'question/{id+1}')
-            else:
-                # bad answer, redirect to the same page
-                return redirect(f'question/{id}')
-        except:
-            pass
+@login_required
+def submitAns(request, question_id, answers):
+    question = Question.objects.get(pk=question_id)
+    try:
+        answer = Answer.objects.get(
+            user=request.user, question=question)
+        answer.answer = int(answers)
+        answer.save()
+        return JsonResponse({"status": "updated"})
+    except:
+        answer = Answer(user=request.user, question=question,
+                        answer=int(answers))
+        answer.save()
+        return JsonResponse({
+            "status": "added"
+        })
+    return JsonResponse({
+        "error": "SomeThing Went Wrong"
+    })
 
-    user_question = Question.objects.filter(index=id)
-    context = {'question': user_question[0], 'id': id}
-    return render(request, 'account/question.html', context)
+
+# Reusable view for every question
 
 
 def createSession(request, question_id, answerSelected):

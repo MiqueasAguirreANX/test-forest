@@ -1,13 +1,17 @@
-document.addEventListener('DOMContentLoaded',()=>{
-    document.querySelectorAll('.radiobtn').forEach(input => getSession(input.id))
-    document.querySelectorAll('.radiobtn').forEach(btn => btn.addEventListener('click',()=>{
-        createSession(btn.id,btn.value);
+    document.querySelectorAll('.radiobtn').forEach(input => getSession(input.id));
+    document.querySelectorAll('.radiobtn').forEach(item => item.addEventListener('click',()=>{
+        createSession(item.id,item.value);
+        submitAns(item.id,item.value);
+        document.querySelector('#nextbtn').click();
     }));
-    document.querySelector('#submit').addEventListener('click',()=>{
-        document.querySelector('form').submit();
-    });
-});
 
+
+
+function submitAns(id,value){
+    fetch(`/submitans/${id}/${value}`)
+    .then(response => response.json())
+    .then(status => console.log(status))
+}
 
 function createSession(question_id,answer){
     fetch(`/createsession/${question_id}/${answer}`)
