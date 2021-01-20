@@ -1,16 +1,14 @@
+from json import dumps
+import json
+from django.core.paginator import Paginator
+import random
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from .models import Question, Answer
 from django.http import JsonResponse
 from django.shortcuts import HttpResponse, HttpResponseRedirect, render
-<<<<<<< HEAD
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-import random
-=======
-from django.core.paginator import Paginator
-import json
-from json import dumps
->>>>>>> refs/remotes/origin/master
+
 # Create your views here.
 # @login_required
 
@@ -40,13 +38,13 @@ def submitAns(request, question_id, answers):
         answer = Answer.objects.get(
             user=request.user, question=question)
         answer.answer = int(answers)
-        print('answers',answer)
+        print('answers', answer)
         answer.save()
         return JsonResponse({"status": "updated"})
     except:
         answer = Answer(user=request.user, question=question,
                         answer=int(answers))
-        print('answer',answer)
+        print('answer', answer)
         answer.save()
         return JsonResponse({
             "status": "added"
@@ -55,12 +53,15 @@ def submitAns(request, question_id, answers):
         "error": "SomeThing Went Wrong"
     })
 
+
 @login_required
 def visualize(request):
     answers = Answer.objects.filter(user=request.user)
-    ans_scores_1,ans_scores_2 = [] , []
+    if(len(answers) < 21):
+        return redirect('core:requestions')
+    ans_scores_1, ans_scores_2 = [], []
     subscale_score_dict = {}
-    ## For 2 subscales for now - will update during delievering to client for 36 subscales
+    # For 2 subscales for now - will update during delievering to client for 36 subscales
     for ans in answers:
         if ans.question.subscale == "1":
             ans_scores_1.append(ans.answer)
@@ -69,29 +70,10 @@ def visualize(request):
 
     subscale_score_dict["1"] = sum(ans_scores_1)
     subscale_score_dict["2"] = sum(ans_scores_2)
-    
+
     datadict = dumps(subscale_score_dict)
-    
-    return render(request,'visualize.html',{'answers':datadict})
-    
 
-
-@login_required
-def visualize(request):
-    answers = Answer.objects.filter(user=request.user)
-    if(len(answers) < 22):
-        return redirect('core:requestions')
-    ans_scores_1, ans_scores_2 = [], []
-    subscale_score_dict = {}
-    for ans in answers:
-        if ans.question.subscale == "1":
-            ans_scores_1.append(ans.answer)
-        elif ans.question.subscale == "2":
-            ans_scores_2.append(ans.answer)
-        print(type(ans.question.subscale))
-    subscale_score_dict["1"] = ans_scores_1
-    subscale_score_dict["2"] = ans_scores_2
-    print(sum(subscale_score_dict["1"]))
+    return render(request, 'visualize.html', {'answers': datadict})
 
 
 @login_required

@@ -1,9 +1,5 @@
 from django.urls import path
-<<<<<<< HEAD
 from core.views import index, createSession, visualize, getSession, reQuestions, submitAns
-=======
-from core.views import index, createSession, getSession, submitAns,visualize
->>>>>>> refs/remotes/origin/master
 app_name = 'core'
 
 urlpatterns = [
@@ -15,5 +11,5 @@ urlpatterns = [
     path('createsession/<str:question_id>/<str:answerSelected>',
          createSession, name="createsession"),
     path('submitans/<question_id>/<answers>', submitAns, name="submitans"),
-    path('visualize',visualize,name='visualize')
+    path('visualize', visualize, name='visualize')
 ]
