@@ -14,7 +14,8 @@
     </h3>
 </div>
     {% for question in page_obj %}
-    {% if page_obj.number < 23 %}
+    {{question.id}}
+    {% if page_obj.number < 397 %}
     <h2 class="text-center"> To what extent do I like to <br>{{ question.question }}?</h2>
     {% else %}
     <h2 class="text-center"> TO WHAT EXTENT DO THE FOLLOWING WORDS DESCRIBE YOU <br>{{ question.question }}?</h2>
@@ -52,7 +53,7 @@
         </table>
         
       </form>
-      <p class="h5 ml-3">One answer mandatotory gut only one</p>
+      <p class="p ml-3" style="margin-left: 40px;">One answer mandatotory gut only one</p>
       </div>
     {% endfor %}
 </div>

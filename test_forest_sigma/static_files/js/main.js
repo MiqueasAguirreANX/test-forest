@@ -3,11 +3,12 @@ var timeleft = 5;
 var downloadTimer = setInterval(function(){
   if(timeleft <= 0){
     clearInterval(downloadTimer);
-    // alert("Please Select an option");
-    document.getElementById("countdown").innerHTML = "Finished";
-  } else {
-    document.getElementById("countdown").innerHTML = "0:"+"0"+timeleft;
-  }
+    alert("Please fill answer for this question!!");
+    // document.getElementById("countdown").innerHTML = "Finished";
+  } 
+//   else {
+//     document.getElementById("countdown").innerHTML = "0:"+"0"+timeleft;
+//   }
   timeleft -= 1;
 }, 1000);
 document.querySelectorAll('.radiobtn').forEach(item => item.addEventListener('click',()=>{
