@@ -44,7 +44,7 @@ CATEGORY_CHOICES = (
 class Question(models.Model):
     question = models.CharField(max_length=150, null=True)
     subscale = models.CharField(
-        choices=CATEGORY_CHOICES, max_length=2, null=True)
+        choices=CATEGORY_CHOICES, max_length=2, null=True, blank=True)
 
     def __str__(self) -> str:
         return f'{self.question} {self.subscale}'
@@ -59,3 +59,9 @@ class Answer(models.Model):
 
     def __str__(self) -> str:
         return f'answer {self.answer} to question {self.question.subscale}'
+
+
+class Randomized(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
+    random = models.BooleanField(default=False)

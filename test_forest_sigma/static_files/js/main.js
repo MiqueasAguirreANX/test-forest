@@ -1,4 +1,15 @@
 document.querySelectorAll('.radiobtn').forEach(input => getSession(input.id));
+var timeleft = 5;
+var downloadTimer = setInterval(function(){
+  if(timeleft <= 0){
+    clearInterval(downloadTimer);
+    // alert("Please Select an option");
+    document.getElementById("countdown").innerHTML = "Finished";
+  } else {
+    document.getElementById("countdown").innerHTML = "0:"+"0"+timeleft;
+  }
+  timeleft -= 1;
+}, 1000);
 document.querySelectorAll('.radiobtn').forEach(item => item.addEventListener('click',()=>{
     createSession(item.id,item.value);
     submitAns(item.id,item.value);

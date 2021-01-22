@@ -5,7 +5,7 @@ import random
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
-from .models import Question, Answer
+from .models import Question, Answer, Randomized
 from django.http import JsonResponse
 from django.shortcuts import HttpResponse, HttpResponseRedirect, render
 
@@ -15,25 +15,29 @@ from django.shortcuts import HttpResponse, HttpResponseRedirect, render
 
 @login_required
 def index(request):
-    try:
-        answers = Answer.objects.filter(user=request.user)
-        if len(answers) == 21:
-            return redirect('core:visualize')
-    except:
+    answers = Answer.objects.filter(user=request.user)
+    if len(answers) == 33:
+        return redirect('core:visualize')
+    else:
         questions = Question.objects.all()
-        question_list = []
-        for i in questions:
-            question_list.append(i)
-        random.shuffle(question_list)
+        # question_list = []
+        # for i in questions:
+        #     question_list.append(i)
+        # try:
+        #     isRandom = Randomized.objects.get(user=request.user, random=True)
+        # except:
+        #     isRandom = Randomized(user=request.user, random=True)
+        #     isRandom.save()
+        #     random.shuffle(question_list)
         page = request.GET.get('page', 1)
-        paginator = Paginator(question_list, 1)
+        paginator = Paginator(questions, 1)
         try:
             page_obj = paginator.page(page)
         except PageNotAnInteger:
             page_obj = paginator.page(1)
         except EmptyPage:
             page_obj = paginator.page(paginator.num_pages)
-        return render(request, "question.html", {'page_obj': page_obj})
+        return render(request, "question.html", {'page_obj': page_obj, "pagination": "true"})
 
 
 @login_required
@@ -78,7 +82,7 @@ def visualize(request):
 
     datadict = dumps(subscale_score_dict)
 
-    return render(request, 'visualize.html', {'answers': datadict})
+    return render(request, 'visualize.html', {'answers': datadict, "pagination": "false"})
 
 
 @login_required
@@ -96,7 +100,7 @@ def reQuestions(request):
         page_obj = paginator.page(1)
     except EmptyPage:
         page_obj = paginator.page(paginator.num_pages)
-    return render(request, "question.html", {'page_obj': page_obj, "message": "you have not answer all the questions please answer all the questions and then submit!"})
+    return render(request, "question.html", {'page_obj': page_obj, "message": "you have not answer all the questions please answer all the questions and then submit!", "pagination": "true"})
 
 
 def createSession(request, question_id, answerSelected):

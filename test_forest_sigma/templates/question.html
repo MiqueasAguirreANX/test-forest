@@ -9,44 +9,54 @@
   {{message}}
 </div>
 {% endif %}
+  <div style="border: 2px solid #fff; width: 100px; height: 40px; text-align: center; background-color: #fff; float: right;">
+    <h3 id="countdown">
+    </h3>
+</div>
     {% for question in page_obj %}
-    <h2> <span class="question_number">{{question.id}}</span> To what extent do I like to {{ question.question }}?</h2>
+    {% if page_obj.number < 23 %}
+    <h2 class="text-center"> To what extent do I like to <br>{{ question.question }}?</h2>
+    {% else %}
+    <h2 class="text-center"> TO WHAT EXTENT DO THE FOLLOWING WORDS DESCRIBE YOU <br>{{ question.question }}?</h2>
+    {% endif %}
     <form method="POST" id="form-{{question.id}}" action="{% url 'core:index' %}">
-        {% csrf_token %}
-        <div class="form-check ml-3" id="form-check-1">
-            <input class="form-check-input-1  radiobtn" type="radio" name="flexRadioDefault" id="{{question.id}}" value="1" >
-            <label class="form-check-label" for="flexRadioDefault1">
-              1
-            </label>
-        </div>
-        <div class="form-check" id="form-check-2">
-            <input class="form-check-input-2  radiobtn" type="radio" name="flexRadioDefault" id="{{question.id}}" value="2">
-            <label class="form-check-label" for="flexRadioDefault2">
-              2
-            </label>
-        </div>
-        <div class="form-check" id="form-check-3">
-            <input class="form-check-input-3  radiobtn" type="radio" name="flexRadioDefault" id="{{question.id}}" value="3">
-            <label class="form-check-label" for="flexRadioDefault1">
-              3
-            </label>
-        </div>
-        <div class="form-check" id="form-check-4">
-            <input class="form-check-input-4   radiobtn" type="radio" name="flexRadioDefault" id="{{question.id}}" value="4">
-            <label class="form-check-label" for="flexRadioDefault2">
-              4
-            </label>
-        </div>
-        <div class="form-check" id="form-check-5">
-            <input class="form-check-input-5  radiobtn" type="radio" name="flexRadioDefault" id="{{question.id}}" value="5">
-            <label class="form-check-label" for="flexRadioDefault1">
-              5
-            </label>
-        </div>
-    </form>
+        <table class="table col-lg-6 table-borderless ml-2">
+          <thead>
+            <tr>
+              <th class="form-check-label p text-center" for="flexRadioDefault1">
+                VERY LITTLE
+              </th>
+              <th class="form-check-label p text-center" for="flexRadioDefault2">
+                LITTLE
+              </th> 
+              <th class="form-check-label p text-center" for="flexRadioDefault1">
+              MODERATELY 
+              </th> 
+              <th class="form-check-label p text-center" for="flexRadioDefault2">
+              MUCH 
+              </th>
+              <th class="form-check-label p text-center" for="flexRadioDefault1">
+              VERY MUCH 
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-center"><input class="form-check-input-1  radiobtn" type="radio" name="flexRadioDefault" id="{{question.id}}" value="1"></td>
+              <td class="text-center"><input class="form-check-input-2  radiobtn" type="radio" name="flexRadioDefault" id="{{question.id}}" value="2"></td>
+              <td class="text-center"><input class="form-check-input-3  radiobtn" type="radio" name="flexRadioDefault" id="{{question.id}}" value="3"></td>
+              <td class="text-center"><input class="form-check-input-4  radiobtn" type="radio" name="flexRadioDefault" id="{{question.id}}" value="4"></td>
+              <td class="text-center"><input class="form-check-input-5  radiobtn" type="radio" name="flexRadioDefault" id="{{question.id}}" value="5"></td>
+            </tr>
+          </tbody>
+        </table>
+        
+      </form>
+      <p class="h5 ml-3">One answer mandatotory gut only one</p>
+      </div>
     {% endfor %}
 </div>
-{% if page_obj.number == 22 %}
+{% if page_obj.number == page_obj.paginator.num_pages %}
 <div class="container col-lg-6 mt-5">
 <a href="{% url 'core:visualize' %}" class="btn btn-primary">Submit Your All Answers</a>
 </div>

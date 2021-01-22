@@ -1,30 +1,19 @@
-<html>
-<head>
-Display records of database
-<script src="https://cdn.anychart.com/releases/8.0.0/js/anychart-base.min.js"></script>
-</head>
-<body>
-    <div id="container" style = "width: 50% ; height: 50%"></div>
+{% extends "account/base.html" %}
+{% load static %}
+{% block title_page %} Answers {{ id }}{% endblock %}
+
+{% block content %}
+    <h1 class=" d-flex justify-content-center mt-5 h1" style="color: darkgrey;">Score of your Answers</h1>
+    <div class=" container justify-content-center  col-lg-6 col-md-10 col-sm-11" style = "width: 60%;height: 60%; position: fixed; top: 40%; left: 25%;">
+    <div id="container"></div>
+    </div>
     <script>
-        // here answers is JSONResponse object from view function
-       // var subscale_score = "{{ answers }}";
-       
-       //function visualize(){
-    //fetch(`visualize`)
-    //.then(response => response.json())
-  //  .then(result => result);
-//}
-
        var result = JSON.parse("{{answers|escapejs}}");
-       //var myWindow = window.open('','','width=200,height=100')
-       //myWindow.document.write(result)
-       //myWindow.print();
-
        anychart.onDocumentReady(function() {
             var data = {
                 header: ["Subscales","Scores"],
                 rows : [
-                    ["1",result["1"]],["2",result["2"]] // for 2 subscales- will update when we deliever to client for 36 scales
+                    ["SELF-ANALYSIS",result["1"]],["INTUITION",result["2"]] // for 2 subscales- will update when we deliever to client for 36 scales
                 ]
             };
           
@@ -38,6 +27,4 @@ Display records of database
 
 </script>
     
- 
-</body>
-</html>
+{% endblock %}
