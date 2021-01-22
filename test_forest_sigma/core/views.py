@@ -77,8 +77,9 @@ def visualize(request):
         elif ans.question.subscale == "2":
             ans_scores_2.append(ans.answer)
 
-    subscale_score_dict["1"] = sum(ans_scores_1)
-    subscale_score_dict["2"] = sum(ans_scores_2)
+    
+    subscale_score_dict["1"] = sum(ans_scores_1)/len(ans_scores_1)
+    subscale_score_dict["2"] = sum(ans_scores_2)/len(ans_scores_2)
 
     datadict = dumps(subscale_score_dict)
 
