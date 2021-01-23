@@ -57,19 +57,28 @@ def submitAns(request, question_id, answers):
 @login_required
 def visualize(request):
     answers = Answer.objects.filter(user=request.user)
+<<<<<<< HEAD
     print('length', len(answers))
+=======
+    print('length',len(answers))
+>>>>>>> 31409ffa9c98394b72bdfa25ada47e2f2d81e0a1
     if len(answers) < 408:
         return redirect('core:requestions')
     subscale_score_dict = {}
     # For 2 subscales for now - will update during delievering to client for 36 subscales
     subscale_list = []
+<<<<<<< HEAD
     for i in range(1, 37):
+=======
+    for i in range(1,37):
+>>>>>>> 31409ffa9c98394b72bdfa25ada47e2f2d81e0a1
         subscale_list.append(str(i))
     for subscale in subscale_list:
         ans_scores = []
         for ans in answers:
             if ans.question.subscale == subscale:
                 ans_scores.append(ans.answer)
+<<<<<<< HEAD
             # Editing for now only
         if len(ans_scores) != 0:
             subscale_score_dict[subscale] = sum(ans_scores)/len(ans_scores)
@@ -80,12 +89,26 @@ def visualize(request):
     subscale_names_ = list(subscale_score_dict.keys())
     subscale_dict = {'1': 'SELF-ANALYSIS', '2': 'INTUITION', '3': 'MEDITATION', '4': 'AMBITION', '5': 'PRIDE', '6': 'LEADERSHIP', '7': 'CONVERSATION', '8': 'AFFILIATION', '9': 'SOLIDARITY', '10': 'AUTONOMY', '11': 'FREEDOM', '12': 'SOLITUDE', '13': 'AMUSEMENT', '14': 'EROTICISM', '15': 'PLAYFULNESS', '16': 'ORDERLINESS', '17': 'PLANNING',
                      '18': 'PRECISION', '19': 'INNOVATION', '20': 'ABSTRACTION', '21': 'REFLECTION', '22': 'CONFORMITY', '23': 'TRADITION', '24': 'SECURITY', '25': 'DEVOTION', '26': 'HARMONY', '27': 'RESPECT', '28': 'RESPONSE', '29': 'REVENGE', '30': 'ANGER', '31': 'TEMERITY', '32': 'ADVENTURE', '33': 'VARIETY', '34': 'JOVIALITY', '35': 'VIVACITY', '36': 'OPTIMISM'}
+=======
+            ### Editing for now only
+        if len(ans_scores)!=0:
+            subscale_score_dict[subscale] = sum(ans_scores)/len(ans_scores)
+    
+    subscale_score_dict = dict(sorted(subscale_score_dict.items(),key=lambda val:val[1],reverse=True))
+    ## sorted dictionary according to scores
+    subscale_names_ = list(subscale_score_dict.keys())
+    subscale_dict = {'1': 'SELF-ANALYSIS', '2': 'INTUITION', '3': 'MEDITATION', '4': 'AMBITION', '5': 'PRIDE', '6': 'LEADERSHIP', '7': 'CONVERSATION', '8': 'AFFILIATION', '9': 'SOLIDARITY', '10': 'AUTONOMY', '11': 'FREEDOM', '12': 'SOLITUDE', '13': 'AMUSEMENT', '14': 'EROTICISM', '15': 'PLAYFULNESS', '16': 'ORDERLINESS', '17': 'PLANNING', '18': 'PRECISION', '19': 'INNOVATION', '20': 'ABSTRACTION', '21': 'REFLECTION', '22': 'CONFORMITY', '23': 'TRADITION', '24': 'SECURITY', '25': 'DEVOTION', '26': 'HARMONY', '27': 'RESPECT', '28': 'RESPONSE', '29': 'REVENGE', '30': 'ANGER', '31': 'TEMERITY', '32': 'ADVENTURE', '33': 'VARIETY', '34': 'JOVIALITY', '35': 'VIVACITY', '36': 'OPTIMISM'}
+>>>>>>> 31409ffa9c98394b72bdfa25ada47e2f2d81e0a1
     subscale_names = []
     for sub in subscale_names_:
         subscale_names.append(subscale_dict[sub])
     datadict = dumps(subscale_score_dict)
 
+<<<<<<< HEAD
     return render(request, 'visualize.html', {'answers': datadict, "subscale_names_1": subscale_names[:5], "subscale_names_2": subscale_names[5:13], "subscale_names_3": subscale_names[13:23], "subscale_names_4": subscale_names[23:31], "subscale_names_5": subscale_names[31:36], "pagination": "false"})
+=======
+    return render(request, 'visualize.html', {'answers': datadict,"subscale_names_1":subscale_names[:5],"subscale_names_2":subscale_names[5:13],"subscale_names_3":subscale_names[13:23],"subscale_names_4":subscale_names[23:31],"subscale_names_5":subscale_names[31:36], "pagination": "false"})
+>>>>>>> 31409ffa9c98394b72bdfa25ada47e2f2d81e0a1
 
 
 @login_required
