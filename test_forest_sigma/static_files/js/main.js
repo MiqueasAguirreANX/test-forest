@@ -1,5 +1,4 @@
 document.querySelectorAll('.radiobtn').forEach(input => getSession(input.id));
-document.querySelector('.form-check-input-3').click();
 if (document.querySelector('.timer')){
     var timeleft = 5;
 var downloadTimer = setInterval(function(){
