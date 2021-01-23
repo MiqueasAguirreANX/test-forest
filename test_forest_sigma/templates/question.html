@@ -13,8 +13,8 @@
     <h3 id="countdown">
     </h3>
 </div>
+<div class="timer"></div>
     {% for question in page_obj %}
-    {{question.id}}
     {% if page_obj.number < 397 %}
     <h2 class="text-center"> To what extent do I like to <br>{{ question.question }}?</h2>
     {% else %}

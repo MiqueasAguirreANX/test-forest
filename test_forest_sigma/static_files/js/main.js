@@ -1,5 +1,7 @@
 document.querySelectorAll('.radiobtn').forEach(input => getSession(input.id));
-var timeleft = 5;
+document.querySelector('.form-check-input-3').click();
+if (document.querySelector('.timer')){
+    var timeleft = 5;
 var downloadTimer = setInterval(function(){
   if(timeleft <= 0){
     clearInterval(downloadTimer);
@@ -16,6 +18,7 @@ document.querySelectorAll('.radiobtn').forEach(item => item.addEventListener('cl
     submitAns(item.id,item.value);
     document.querySelector('#nextbtn').click();
 }));
+}
 
 
 
